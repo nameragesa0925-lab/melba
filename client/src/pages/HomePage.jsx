@@ -65,23 +65,37 @@ const processSteps = [
   },
 ]
 
-const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const apiBases = [
+  import.meta.env.VITE_API_URL,
+  'http://localhost:5000/api',
+  'http://localhost:5001/api',
+].filter(Boolean)
 
 function HomePage() {
   const [services, setServices] = useState(defaultServices)
 
   useEffect(() => {
     const fetchServices = async () => {
-      try {
-        const response = await fetch(`${apiBase}/services`)
-        if (!response.ok) throw new Error('API request failed')
+      let lastError = null
 
-        const data = await response.json()
-        if (Array.isArray(data) && data.length > 0) {
-          setServices(data)
+      for (const baseUrl of apiBases) {
+        try {
+          const response = await fetch(`${baseUrl.replace(/\/$/, '')}/services`)
+          if (!response.ok) throw new Error('API request failed')
+
+          const data = await response.json()
+          if (Array.isArray(data) && data.length > 0) {
+            setServices(data)
+            return
+          }
+        } catch (error) {
+          lastError = error
+          console.warn(`Could not reach API at ${baseUrl}:`, error.message)
         }
-      } catch (error) {
-        console.error('Could not fetch services:', error)
+      }
+
+      if (lastError) {
+        console.error('Could not fetch services from any configured API endpoint:', lastError)
       }
     }
 
