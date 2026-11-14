@@ -109,7 +109,9 @@ function HomePage() {
           <div className="row align-items-center">
             <div className="col-lg-7 hero-content">
               <span className="hero-kicker">Print • Publish • Package</span>
-              <h1 className="hero-title"> Delivering,Quality and Punctuality are our qualifications.</h1>
+              <h1 className="hero-title" style={{ color: '#fff' }}>
+                Delivering,Quality and Punctuality are our Qualifications.
+              </h1>
               <p className="lead text-white-50">
                 From bold various Textbooks Teacher Guides,Invitation cards (various events),Calendars,Receipts and financial documents and commercial prints to premium packaging and publishing support, we turn ideas
                 into tangible, high-impact materials.
